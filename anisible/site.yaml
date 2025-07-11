@@ -1,0 +1,30 @@
+- name: Clone and run
+  hosts: localhost
+  tasks:
+    - name: Clone k3s-ansible repo
+      git:
+        repo: https://github.com/k3s-io/k3s-ansible.git
+        dest: /opt/k3s
+        update: yes
+        
+    - name: Ensure inventory/sample directory exists
+      file:
+        path: /opt/k3s/inventory/sample
+        state: directory
+
+    - name: Create inventory file for k3s-ansible
+      copy:
+        dest: /opt/k3s/inventory/sample/hosts.ini
+        content: |
+          [local]
+          localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
+
+    - name: Run k3s ansible playbook
+      ansible.builtin.command: ansible-playbook site.yml -i inventory/sample/hosts.ini
+      args:
+        chdir: /opt/k3s
+
+    - name: Clone vmboot or another repo
+      git:
+        repo: https://github.com/holmanb/vmboot.git
+        dest: /opt/vmboot
