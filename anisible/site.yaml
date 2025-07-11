@@ -20,7 +20,7 @@
           localhost ansible_connection=local ansible_python_interpreter=/usr/bin/python3
 
     - name: Run k3s ansible playbook
-      ansible.builtin.command: ansible-playbook site.yml -i inventory/sample/hosts.ini
+      ansible.builtin.command: ansible-playbook playbooks/site.yml -i inventory/sample/hosts.ini
       args:
         chdir: /opt/k3s
 
